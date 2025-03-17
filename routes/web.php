@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return redirect()->route('admin.login');
+});
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard', ['user' => Auth::user()]);
@@ -27,7 +27,7 @@ Route::post('/admin/login', [AuthController::class, 'login']);
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 Route::middleware(['auth', 'role:Admin'])->group(function () {
-    Route::get('/admin', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/users', [AuthController::class, 'usersList'])->name('admin.users');
     Route::get('/admin/create', [AuthController::class, 'createUser'])->name('admin.create');
@@ -38,7 +38,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:Editor'])->group(function () {
-    Route::get('/admin', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/users', [AuthController::class, 'usersList'])->name('admin.users');
     Route::get('/admin/edit/{id}', [AuthController::class, 'editUser'])->name('admin.edit');
@@ -46,7 +46,7 @@ Route::middleware(['auth', 'role:Editor'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:User'])->group(function () {
-    Route::get('/admin', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/users', [AuthController::class, 'usersList'])->name('admin.users');
 });

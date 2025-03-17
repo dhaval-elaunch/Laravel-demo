@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,7 +41,9 @@
                         <th class="border border-gray-300 px-4 py-2">Name</th>
                         <th class="border border-gray-300 px-4 py-2">Email</th>
                         <th class="border border-gray-300 px-4 py-2">Role</th>
-                        <th class="border border-gray-300 px-4 py-2">Actions</th>
+                        @if(auth()->user()->roles->contains('name', 'Admin') || auth()->user()->roles->contains('name', 'Editor'))
+                            <th class="border border-gray-300 px-4 py-2">Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +59,9 @@
                             </td>
                             <td class="px-4 py-2 text-center">
                                 @if(auth()->user()->roles->contains('name', 'Admin') || auth()->user()->roles->contains('name', 'Editor'))
-                                    <a href="{{ route('admin.edit', $user->id) }}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Edit</a>
+                                    <a href="{{ route('admin.edit', $user->id) }}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                                        <i class="fa-solid fa-edit"></i> Edit
+                                    </a>
                                 @endif
                             </td>
                         </tr>
