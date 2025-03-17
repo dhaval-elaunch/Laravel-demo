@@ -34,7 +34,9 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        $users = User::with('roles')->get(); // Fetch all users with their roles
+        $users = User::with('roles')
+        ->where('email', '!=', 'admin@admin.com') // Exclude by email
+        ->get();
         return view('admin.dashboard', compact('users'));
     }
 
