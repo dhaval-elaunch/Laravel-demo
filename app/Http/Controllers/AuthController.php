@@ -10,6 +10,36 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->roles()->attach(Role::where('name', 'User')->first());
+
+        return response()->json(['message' => 'User created successfully']);
+    }
+
+    public function logins(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $user = Auth::user();
+        $token = $user->createToken('authToken')->accessToken;
+
+        return response()->json([
+            'token' => $token,
+            'role' => $user->roles->first()->name // Return user role
+        ]);
+    }
+
     public function loginForm()
     {
         if (Auth::check()) {
@@ -37,6 +67,7 @@ class AuthController extends Controller
         $users = User::with('roles')
         ->where('email', '!=', 'admin@admin.com') // Exclude by email
         ->get();
+        dd($users);
         return view('admin.dashboard', compact('users'));
     }
 
